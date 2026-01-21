@@ -1,10 +1,10 @@
 [build]
+  base = "client"
   command = "npm run build"
   publish = "dist"
 
-[dev]
-  command = "npm run dev"
-  targetPort = 5173
+[context.production.environment]
+  NODE_VERSION = "20"
 
 # Handle Single Page Application routing
 [[redirects]]
