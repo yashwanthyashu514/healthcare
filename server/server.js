@@ -50,10 +50,18 @@ const initializeApp = async () => {
 initializeApp();
 
 // Middleware
-const corsOptions = {
-    origin: process.env.FRONTEND_URL || '*', // Restrict to frontend URL in production
+origin: (origin, callback) => {
+    console.log('📡 Request Origin:', origin); // Debug Log
+    const allowedOrigin = process.env.FRONTEND_URL || '*';
+    if (allowedOrigin === '*' || origin === allowedOrigin) {
+        callback(null, true);
+    } else {
+        console.log('❌ CORS Blocked:', origin, 'Expected:', allowedOrigin);
+        callback(new Error('Not allowed by CORS'));
+    }
+},
     credentials: true,
-    optionsSuccessStatus: 200
+        optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
 app.use(express.json());
