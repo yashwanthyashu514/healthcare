@@ -50,7 +50,12 @@ const initializeApp = async () => {
 initializeApp();
 
 // Middleware
-app.use(cors());
+const corsOptions = {
+    origin: process.env.FRONTEND_URL || '*', // Restrict to frontend URL in production
+    credentials: true,
+    optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -87,7 +92,7 @@ const http = require('http');
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
     cors: {
-        origin: "*", // Allow connections from any origin (configure for prod)
+        origin: process.env.FRONTEND_URL || "*", // Allow connections from any origin (configure for prod)
         methods: ["GET", "POST"]
     }
 });
@@ -122,7 +127,7 @@ const startServer = (port) => {
                 console.log('');
                 console.log('⚠️  Port Conflict Detected');
                 console.log(`❌ Port ${port} is already in use`);
-                
+
                 // Try next port
                 const nextPort = port + 1;
                 if (nextPort - PORT < 10) { // Try up to 10 ports

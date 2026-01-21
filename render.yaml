@@ -1,11 +1,12 @@
 services:
   - type: web
     name: healthcare-backend
+    rootDir: server
     env: node
     plan: free
     region: singapore
-    buildCommand: cd server && npm install
-    startCommand: cd server && node server.js
+    buildCommand: npm install
+    startCommand: node server.js
     envVars:
       - key: NODE_ENV
         value: production
